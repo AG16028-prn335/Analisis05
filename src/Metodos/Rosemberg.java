@@ -16,11 +16,10 @@ public class Rosemberg {
             v[i][1]=t.Tra(a, b, fun,v[i][0]);
         }
          double y=4;
-        System.out.println(" es cosa del metodo");
         for (int i = 2; i < n+1; i++) {
             for (int j = i; j <(n+1); j++) {
                 cad="(("+y+")("+v[j-1][i-1]+")-("+v[j-2][i-1]+"))/("+(y-1)+")";
-                v[i-1][j-1]=je.Ecu(cad, y);
+                v[j-1][i]=je.Ecu(cad, 0);
             }
             y*=y;
         }
