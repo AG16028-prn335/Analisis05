@@ -8,7 +8,7 @@ public class Simpson {
     String cad2;
     String cad3;
     Evaluador je = new Evaluador();
-    public double Sim1S(double a, double b,String fun){
+    public double Simp1S(double a, double b,String fun){
         h=(b-a)/(2);
         cad="";
         cad="("+h+")("+je.Ecu(fun,a)+"+(4)("+je.Ecu(fun,(a+h))+")+"+je.Ecu(fun,b)+")/3";
