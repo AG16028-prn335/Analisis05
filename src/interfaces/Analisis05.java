@@ -12,7 +12,6 @@ import Metodos.Trapecio;
 import Metodos.diferenciasAdelante;
 import Metodos.diferenciasAtras;
 import Metodos.diferenciasCentradas;
-import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
  * @author robal
  */
 public class Analisis05 extends javax.swing.JFrame {
-
+    DefaultTableModel op= new DefaultTableModel();
     /**
      * Creates new form Analisis05
      */
@@ -33,9 +32,7 @@ public class Analisis05 extends javax.swing.JFrame {
     Rosemberg r = new Rosemberg();
     Simpson s = new Simpson();
     int n;
-    int cal;
     JTextArea con = new JTextArea();
-    DefaultTableModel ta = new DefaultTableModel(new Object[]{"h", "nivel 0", "nivel 1", "nivle 2", "nivel 3"}, 0);
 
     public Analisis05() {
         initComponents();
@@ -66,6 +63,9 @@ public class Analisis05 extends javax.swing.JFrame {
         txta = new javax.swing.JTextField();
         txtb = new javax.swing.JTextField();
         tN = new javax.swing.JComboBox();
+        btntable = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        ttable = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -123,7 +123,7 @@ public class Analisis05 extends javax.swing.JFrame {
                 integrationItemStateChanged(evt);
             }
         });
-        getContentPane().add(integration, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100, 200, 30));
+        getContentPane().add(integration, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 100, 200, 30));
 
         txt.setEditable(false);
         txt.setColumns(20);
@@ -134,12 +134,12 @@ public class Analisis05 extends javax.swing.JFrame {
 
         txq.setForeground(new java.awt.Color(153, 255, 255));
         txq.setText("Que metodo desea utilizar?");
-        getContentPane().add(txq, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, -1, 20));
+        getContentPane().add(txq, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 100, -1, 20));
 
         jLabel2.setForeground(new java.awt.Color(153, 255, 255));
         jLabel2.setText("Valor de N:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 110, -1, -1));
-        getContentPane().add(txta, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 100, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
+        getContentPane().add(txta, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 60, -1, -1));
         getContentPane().add(txtb, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 100, -1, -1));
 
         tN.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SELECCIONE", "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
@@ -153,7 +153,38 @@ public class Analisis05 extends javax.swing.JFrame {
                 tNKeyTyped(evt);
             }
         });
-        getContentPane().add(tN, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 100, 120, -1));
+        getContentPane().add(tN, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, 120, -1));
+
+        btntable.setText("Ejecicio 9.4 y 9.5");
+        btntable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btntableActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btntable, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 330, 150, -1));
+
+        ttable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "", "", "", ""
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(ttable);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 140, -1, 100));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondo-negro.jpg"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 660, 410));
@@ -214,7 +245,6 @@ public class Analisis05 extends javax.swing.JFrame {
 
     private void cmbfunItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbfunItemStateChanged
         txt.setText("");
-        cal = 0;
         tN.setSelectedIndex(0);
         if (cmbfun.getSelectedIndex() != 0) {
             switch (cmbfun.getSelectedIndex()) {
@@ -222,24 +252,32 @@ public class Analisis05 extends javax.swing.JFrame {
                     if (n == 1) {
                         txt.setText("Metodo de la Primera diferencia haci Adelante\n"
                                 + "f ' (x) =  " + da.Der1P(1.2, 0.1, cmbfun.getSelectedItem().toString()));
-                    } else {
+                    } else if(n==2){
                         tN.setVisible(true);
                         jLabel2.setVisible(true);
                         txta.setText("1");
                         txtb.setText("1.4");
                         integration.setSelectedIndex(0);
+                    }else{
+                        //va lo de la tabla
+                        op=OPr(4);
+                        ttable.setModel(op);
                     }
                     break;
                 case 2:
                     if (n == 1) {
                         txt.setText("Metodo de la Primera diferencia haci Adelante\n"
                                 + "f ' (x) = " + da.Der1P(0.5, 0.1, cmbfun.getSelectedItem().toString()));
-                    } else {
+                    } else if(n==2){
                         tN.setVisible(true);
                         jLabel2.setVisible(true);
                         txta.setText("0");
                         txtb.setText("1.2");
                         integration.setSelectedIndex(0);
+                    }else{
+                        //va lo de la tabla
+                        op=OPr(6);
+                        ttable.setModel(op);
                     }
                     break;
                 case 3:
@@ -327,7 +365,6 @@ public class Analisis05 extends javax.swing.JFrame {
                         txt.setText("Metodo de los 3 puntos: " + m.for3(1.3, 0.1, cmbfun.getSelectedItem().toString()) + "\n"
                                 + "Metodo de los 5 puntos\nprimera diferencia: " + m.for5(1.3, 0.1, cmbfun.getSelectedItem().toString(), 1) + "\n"
                                 + "segunda diferencia: " + m.for5(1.3, 0.1, cmbfun.getSelectedItem().toString(), 2));
-                        txt.setText(con.getText());
                     }
                     break;
             }
@@ -381,6 +418,21 @@ public class Analisis05 extends javax.swing.JFrame {
             integration.setEnabled(false);
         }
     }//GEN-LAST:event_tNItemStateChanged
+
+    private void btntableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntableActionPerformed
+    ver(false);
+    n=3;
+    jScrollPane2.setVisible(true);
+    ttable.setVisible(true);
+   deri.setVisible(false);
+   integracion.setVisible(false);
+   nombres.setVisible(false);
+   cmbfun.setVisible(true);
+   cmbfun.removeAllItems();
+   cmbfun.addItem("--SELECCIONE--");
+   cmbfun.addItem("Ejercicio 9.4");
+   cmbfun.addItem("Ejercicio 9.5");
+    }//GEN-LAST:event_btntableActionPerformed
     public final void ver(boolean x) {
         cmbfun.setVisible(x);
         integracion.setVisible(!x);
@@ -394,6 +446,41 @@ public class Analisis05 extends javax.swing.JFrame {
         txta.setVisible(false);
         txtb.setVisible(false);
         jLabel2.setVisible(false);
+        btntable.setVisible(x);
+        jScrollPane2.setVisible(false);
+        ttable.setVisible(false);
+    }
+    
+    public DefaultTableModel OPr(int n){
+        Object m[][]= new Object[3][n+1];
+        m[0][0]="x";
+        m[1][0]="f(x)";
+        m[2][0]="f'(x)";
+        if (n==4) {
+            String z[]={"Datos","x0","x1","x2","x3"};
+            m[0][1]=-0.4;
+            for (int i =2; i <n+1; i++) {
+                m[0][i]=Double.parseDouble(""+m[0][i-1])+0.2;
+            }
+            m[1][1]=1.670320046;
+            m[1][4]=m[1][2]= 1.8187307531;
+            m[1][3]=2;
+            
+            op= new DefaultTableModel(m, z);
+        }else{
+            String c1[]={"datos","x0","x1","x2","x3","x4","x5"};
+            m[0][1]=-2;
+            m[1][1]=-4;
+            for (int i = 2; i <n+1; i++) {
+                m[0][i]=1+Integer.parseInt(""+m[0][i-1]);
+                m[1][i]=1+Integer.parseInt(""+m[1][i-1]);
+            }
+            for (int i = 1; i <n+1; i++) {
+                m[2][i]=this.c.Der1pC(Double.parseDouble(""+m[0][i]),1,"x-2");
+            }
+            op= new DefaultTableModel(m, c1);
+        }
+       return op;
     }
 
     /**
@@ -432,6 +519,7 @@ public class Analisis05 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btntable;
     private javax.swing.JComboBox cmbfun;
     private javax.swing.JButton deri;
     private javax.swing.JButton integracion;
@@ -441,8 +529,10 @@ public class Analisis05 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel nombres;
     private javax.swing.JComboBox tN;
+    private javax.swing.JTable ttable;
     private javax.swing.JLabel txq;
     private javax.swing.JTextArea txt;
     private javax.swing.JTextField txta;
